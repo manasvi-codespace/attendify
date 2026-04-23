@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Attendify Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+:root {
+    --pink: #ff8fab;
+    --purple: #c77dff;
+    --blue: #70d6ff;
+    --yellow: #ffd670;
+    --green: #80ed99;
+    --bg: #fdfcff;
+    --text: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 🌸 Background image */
+body {
+    background: url("https://images.unsplash.com/photo-1557683316-973673baf926") no-repeat center/cover;
+}
+
+/* Soft overlay */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.8);
+}
+
+/* Layout */
+.container {
+    display: flex;
+    position: relative;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    background: white;
+    padding: 20px;
+    border-radius: 0 20px 20px 0;
+    box-shadow: 5px 0 20px rgba(0,0,0,0.05);
+}
+
+.sidebar h2 {
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #666;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: linear-gradient(45deg, var(--pink), var(--purple));
+    color: white;
+}
+
+/* Main */
+.main {
+    flex: 1;
+    padding: 30px;
+}
+
+/* Header */
+.header {
+    margin-bottom: 20px;
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Cards */
+.card {
+    padding: 20px;
+    border-radius: 20px;
+    color: white;
+    transition: 0.3s;
+}
+
+/* Different gradient cards */
+.card:nth-child(1) { background: linear-gradient(45deg, var(--pink), var(--purple)); }
+.card:nth-child(2) { background: linear-gradient(45deg, var(--blue), var(--green)); }
+.card:nth-child(3) { background: linear-gradient(45deg, var(--yellow), var(--pink)); }
+
+.card:hover {
+    transform: translateY(-6px) scale(1.02);
+}
+
+/* Chart */
+.chart-box {
+    margin-top: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    height: 320px;
+}
+
+/* Title emoji */
+h1 {
+    color: var(--text);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h2> Attendify</h2>
+    <a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+    <a href="attendance.html"><i class="fa fa-check"></i> Attendance</a>
+    <a href="report.html"><i class="fa fa-chart-line"></i> Reports</a>
+    <a href="calendar.html"><i class="fa fa-calendar"></i> Calendar</a>
+</div>
+
+<!-- Main -->
+<div class="main">
+
+<div class="header">
+    <h1> Dashboard</h1>
+</div>
+
+<div class="grid">
+    <div class="card">
+        👩‍🎓 Total Students
+        <h2 id="total"></h2>
+    </div>
+
+    <div class="card">
+        📊 Average %
+        <h2 id="avg"></h2>
+    </div>
+
+    <div class="card">
+        ⚠️ Low Attendance
+        <h2 id="low"></h2>
+    </div>
+</div>
+
+<div class="chart-box">
+    <canvas id="chart"></canvas>
+</div>
+
+</div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

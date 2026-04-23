@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Attendify Calendar</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --pink: #ffafcc;
+    --purple: #cdb4db;
+    --blue: #a2d2ff;
+    --green: #bde0fe;
+    --text: #333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* 🌸 SAME ATTENDIFY BACKGROUND STYLE */
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fdf6ff, #e0f2fe);
+    padding: 20px;
+    text-align: center;
+}
+
+/* 📅 HEADER (MATCH LOGIN STYLE) */
+#month {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 15px;
+    background: rgba(255,255,255,0.7);
+    display: inline-block;
+    padding: 12px 22px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+}
+
+/* 📆 CALENDAR GRID */
+#cal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* 💎 DAY CARD (MATCH LOGIN CARD STYLE) */
+.day {
+    background: rgba(255,255,255,0.85);
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.day:hover {
+    transform: translateY(-3px);
+}
+
+/* 🌟 TODAY */
+.today {
+    border: 2px solid var(--purple);
+}
+
+/* 🟢 GOOD */
+.good {
+    background: linear-gradient(135deg, #b8f2c5, #d9fbe5);
+}
+
+/* 🔴 BAD */
+.bad {
+    background: linear-gradient(135deg, #ffb3b3, #ffd6d6);
+}
+
+/* ⚪ EMPTY */
+.empty {
+    background: rgba(255,255,255,0.7);
+}
+
+/* 📌 POPUP (MATCH LOGIN CARD STYLE) */
+#popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255,255,255,0.95);
+    width: 340px;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    backdrop-filter: blur(10px);
+}
+
+/* 👩‍🎓 STUDENT ROW */
+.student {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    padding: 8px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.6);
+}
+
+/* 🔘 BUTTONS */
+button {
+    border: none;
+    padding: 5px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    background: var(--purple);
+    color: white;
+}
+
+button:hover {
+    opacity: 0.85;
+}
+</style>
+</head>
+
+<body>
+
+<h2 id="month"></h2>
+
+<div id="cal"></div>
+
+<div id="popup">
+    <h3 id="popupDate"></h3>
+    <div id="studentList"></div>
+</div>
+
+<script src="calendar.js"></script>
+
+</body>
+</html>
