@@ -1,59 +1,77 @@
 let students = JSON.parse(localStorage.getItem("students")) || [];
 let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
 
-// 📅 today's date
 let today = new Date().toISOString().split("T")[0];
 
-// create today's attendance if not exists
-if (!attendance[today]) {
-    attendance[today] = students.map(s => ({
-        name: s.name,
-        roll: s.roll,
-        present: null
-    }));
-}
-
-// save function
-function saveAttendance() {
+// 💾 save
+function save() {
+    localStorage.setItem("students", JSON.stringify(students));
     localStorage.setItem("attendance", JSON.stringify(attendance));
 }
 
-// add student (same as before but also update today)
-function add() {
-    if (!name.value || !roll.value) return alert("Fill details");
+// 🔥 ensure today exists
+function sync() {
 
-    let newStudent = {
-        name: name.value,
-        roll: roll.value
-    };
+    if (!attendance[today]) {
+        attendance[today] = [];
+    }
 
-    students.push(newStudent);
+    let updated = [];
 
-    // also add to today's attendance
-    attendance[today].push({
-        name: newStudent.name,
-        roll: newStudent.roll,
-        present: null
+    students.forEach(s => {
+
+        let existing = attendance[today].find(x => x.roll == s.roll);
+
+        updated.push({
+            name: s.name,
+            roll: s.roll,
+            present: existing ? existing.present : null
+        });
     });
 
-    localStorage.setItem("students", JSON.stringify(students));
-    saveAttendance();
-
-    render();
+    attendance[today] = updated;
 }
 
-// mark attendance
+// ➕ ADD STUDENT (FIXED)
+function add() {
+
+    let nameInput = document.getElementById("name");
+    let rollInput = document.getElementById("roll");
+
+    if (!nameInput.value || !rollInput.value) {
+        alert("Fill details");
+        return;
+    }
+
+    students.push({
+        name: nameInput.value,
+        roll: rollInput.value
+    });
+
+    save();
+
+    sync();
+    save();
+    render();
+
+    nameInput.value = "";
+    rollInput.value = "";
+}
+
+// ✔ MARK
 function mark(i, val) {
     attendance[today][i].present = val;
-    saveAttendance();
+    save();
     render();
 }
 
-// render UI (same theme, just data change)
+// 📌 RENDER
 function render() {
 
-    let container = document.getElementById("list");
-    container.innerHTML = "";
+    sync();
+
+    let list = document.getElementById("list");
+    list.innerHTML = "";
 
     attendance[today].forEach((s, i) => {
 
@@ -62,24 +80,19 @@ function render() {
             s.present === false ? "❌ Absent" :
             "⏳ Not Marked";
 
-        container.innerHTML += `
+        list.innerHTML += `
         <div class="student">
-            <b>${s.name}</b> (${s.roll})<br>
+            <b>${s.name}</b> (${s.roll})<br><br>
 
-          <div class="actions">
-    <button class="present" onclick="mark(${i}, true)">
-        <i class="fa-solid fa-check"></i> Present
-    </button>
+            <button class="present" onclick="mark(${i}, true)">✔ Present</button>
+            <button class="absent" onclick="mark(${i}, false)">✖ Absent</button>
 
-    <button class="absent" onclick="mark(${i}, false)">
-        <i class="fa-solid fa-xmark"></i> Absent
-    </button>
-</div>
-            <div>${status}</div>
+            <div style="margin-top:8px">${status}</div>
         </div>
         `;
     });
 }
 
-// run
+// 🚀 INIT
+sync();
 render();
