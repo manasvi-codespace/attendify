@@ -3,36 +3,35 @@ let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
 
 let today = new Date().toISOString().split("T")[0];
 
-// 💾 save
+// 💾 SAVE
 function save() {
     localStorage.setItem("students", JSON.stringify(students));
     localStorage.setItem("attendance", JSON.stringify(attendance));
 }
 
-// 🔥 ensure today exists
+// 🔥 SYNC (FIXED - NO OVERWRITE)
 function sync() {
 
     if (!attendance[today]) {
         attendance[today] = [];
     }
 
-    let updated = [];
-
     students.forEach(s => {
 
         let existing = attendance[today].find(x => x.roll == s.roll);
 
-        updated.push({
-            name: s.name,
-            roll: s.roll,
-            present: existing ? existing.present : null
-        });
+        // 👉 only add new student (don't overwrite old data)
+        if (!existing) {
+            attendance[today].push({
+                name: s.name,
+                roll: s.roll,
+                present: null
+            });
+        }
     });
-
-    attendance[today] = updated;
 }
 
-// ➕ ADD STUDENT (FIXED)
+// ➕ ADD STUDENT
 function add() {
 
     let nameInput = document.getElementById("name");
@@ -48,8 +47,6 @@ function add() {
         roll: rollInput.value
     });
 
-    save();
-
     sync();
     save();
     render();
@@ -58,7 +55,7 @@ function add() {
     rollInput.value = "";
 }
 
-// ✔ MARK
+// ✔ MARK ATTENDANCE
 function mark(i, val) {
     attendance[today][i].present = val;
     save();
